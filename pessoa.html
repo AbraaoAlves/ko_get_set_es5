@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<title>ko-get-set-es5</title>
 
-		<script src="js/knockout-2.2.0.js"></script>
+		<script src="js/knockout-latest.debug.js"></script>
 	</head>
 	<body>
 		<p>
@@ -21,22 +21,46 @@
 		<br>
 		<span data-bind='text: idade'></span>
 		<br>
+        		<p>
+			Nome:
+			<input data-bind="value: nome" />
+		</p>
+		<br>
+		<span data-bind='text: nome'></span>
+		<br>
 
 		<script src="js/ko-es5.js"></script>
 
 		<script type="text/javascript">
-			(function() {
-				var a = {};
-				a.set_nomeCompleto = function(value) {
-					console.log("OverWrite: set_nomeCompleto " + value)
-				};
-				a.set_idade = function(value) {
-					console.log("OverWrite: set_idade " + value)
-				};
+		    var a;
+		    (function () {
+			    a = {
+                    get nome() {
+                        console.log("chamou o get do nome");
+			            return this._nome || "default";
+			        },
+			        set nome(value) {
+			            console.log("value", value);
+                        if(value == "teste")
+                            this._nome = '';
+                        else
+                            this._nome = value;
+			        },
+			        get idade() {
+			            
+			            return this._idade || "default";
+			        },
+			        set idade(value) {
+			            console.log("value", value);
+			            this._idade = value;
+			        }
+			    };
 
 				ko.utils.defineObservableProperty(a, 'nomeCompleto');
 				ko.utils.defineObservableProperty(a, 'idade');
-				ko.applyBindings(a);
+                ko.utils.defineObservableProperty(a, 'nome');
+
+                ko.applyBindings(a);
 			})();
 
 		</script>

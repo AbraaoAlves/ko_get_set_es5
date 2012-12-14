@@ -5,7 +5,7 @@
 		factory(global.ko);
 	}
 })(function(ko) {
-var propOver;
+
 	var defineProperty = function(type, obj, prop, def) {
 		if (obj == null || typeof obj != 'object' || typeof prop != 'string') {
 			throw new Error('invalid arguments passed');
@@ -16,23 +16,34 @@ var propOver;
 		}
 
 		var obv = ko[type](def);
-		(function(propOver){
+	    (function (propOver) {
+            var oldDesc = Object.getOwnPropertyDescriptor(obj, propOver);
+
 			Object.defineProperty(obj, prop, {
 				set : function(value) {
-					methodOver = Object.getOwnPropertyDescriptor(this, 'set_' + propOver)
-					if(methodOver)
-						methodOver.value(value);
-					obv(value)
+				    if (oldDesc && oldDesc.set) {
+				        obv.valueWillMutate();
+
+				        oldDesc.set.call(this, value);
+
+				        obv.valueHasMutated();
+				    } else
+				        obv(value);
 				},
 				get : function() {
-					return obv()
+				    if (oldDesc && oldDesc.get) {
+				        ko.dependencyDetection.registerDependency(obv);
+
+				        return oldDesc.get.call(this);
+				    } else
+				        return obv();
 				},
 				enumerable : true,
 				configurable : true
 			});
 		})(prop);
 
-		Object.defineProperty(obj, '_' + prop, {
+		Object.defineProperty(obj, '__' + prop, {
 			get : function() {
 				return obv
 			},
