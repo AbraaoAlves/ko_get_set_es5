@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>ko-get-set-es5</title>
+
+		<script src="js/knockout-2.2.0.js"></script>
+	</head>
+	<body>
+		<p>
+			Nome:
+			<input data-bind="value: nomeCompleto" />
+		</p>
+		<br>
+		<span data-bind='text: nomeCompleto'></span>
+		<br>
+		<p>
+			Idade:
+			<input data-bind="value: idade" />
+		</p>
+		<br>
+		<span data-bind='text: idade'></span>
+		<br>
+
+		<script src="js/ko-es5.js"></script>
+
+		<script type="text/javascript">
+			(function() {
+				var a = {};
+				a.set_nomeCompleto = function(value) {
+					console.log("OverWrite: set_nomeCompleto " + value)
+				};
+				a.set_idade = function(value) {
+					console.log("OverWrite: set_idade " + value)
+				};
+
+				ko.utils.defineObservableProperty(a, 'nomeCompleto');
+				ko.utils.defineObservableProperty(a, 'idade');
+				ko.applyBindings(a);
+			})();
+
+		</script>
+
+	</body>
+</html>
