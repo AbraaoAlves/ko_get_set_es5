@@ -32,7 +32,7 @@
 				},
 				get : function() {
 				    if (oldDesc && oldDesc.get) {
-				        ko.dependencyDetection.registerDependency(obv);
+				        obv.registerDependency();
 
 				        return oldDesc.get.call(this);
 				    } else

@@ -5,7 +5,7 @@
     <title>ko-es5.js tests</title>
     <link rel="stylesheet" href="js/mocha.css" />
 
-    <script src="js/knockout-2.2.0.js"></script>
+    <script src="https://raw.github.com/AbraaoAlves/knockout/master/build/output/knockout-latest.debug.js"></script>
     <script src="js/expect.js"></script>
     <script src="js/mocha.js"></script>
   </head>
@@ -60,6 +60,20 @@
           expect(ko.isObservable(foo.__friends)).to.be(true);
           expect(foo.__friends.push).to.be.a(Function);
         });
+        
+        it('should be possible define observable property over get/set property', function () {
+            var obj = {
+                get name() { return this._privateName; },
+                set name(value) { this._privateName = value || "default"; }
+            };
+
+            ko.utils.defineObservableProperty(obj, 'name');
+
+            obj.name = undefined;
+
+            expect(obj.name).to.be.equal("default");
+        });
+
       });
 
       describe('observableModel', function() {
