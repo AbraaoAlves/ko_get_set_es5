@@ -10,15 +10,7 @@
     <script src="js/mocha.js"></script>
   </head>
   <body>
-  	<p>Nome: <input data-bind="value: nomeCompleto" /></p>
-  	<br>
-  	<span data-bind='text: nomeCompleto'></span>
-  	<br>
-  	<p>Idade: <input data-bind="value: idade" /></p>
-  	<br>
-  	<span data-bind='text: idade'></span>
-  	<br>
-    <div id="mocha"></div>
+  	<div id="mocha"></div>
     <script>mocha.setup('bdd')</script>
 
     <script src="js/ko-es5.js"></script>
@@ -51,13 +43,13 @@
 
           ko.utils.defineObservableProperty(foo, 'name');
 
-          var descriptor = Object.getOwnPropertyDescriptor(foo, '_name');
+          var descriptor = Object.getOwnPropertyDescriptor(foo, '__name');
           expect(descriptor.enumerable).to.be(false);
           expect(descriptor.configurable).to.be(false);
           expect(descriptor.get).to.be.a(Function);
           expect(descriptor.set).to.be(undefined);
 
-          expect(ko.isObservable(foo._name)).to.be(true);
+          expect(ko.isObservable(foo.__name)).to.be(true);
         });
 
         it('should special case arrays and create an observableArray', function() {
@@ -65,8 +57,8 @@
 
           ko.utils.defineObservableProperty(foo, 'friends', []);
 
-          expect(ko.isObservable(foo._friends)).to.be(true);
-          expect(foo._friends.push).to.be.a(Function);
+          expect(ko.isObservable(foo.__friends)).to.be(true);
+          expect(foo.__friends.push).to.be.a(Function);
         });
       });
 
@@ -119,8 +111,8 @@
             friends: ['Jane']
           });
 
-          expect(ko.isObservable(obj._friends)).to.be(true);
-          expect(obj._friends.push).to.be.a(Function);
+          expect(ko.isObservable(obj.__friends)).to.be(true);
+          expect(obj.__friends.push).to.be.a(Function);
           expect(obj.friends[0]).to.be('Jane');
         });
 
@@ -147,19 +139,7 @@
         } else {
           mocha.run();
         }
-        
-	
-	
-    var a = {};
-    a.set_nomeCompleto = function(a){console.log("OverWrite: set_nomeCompleto " + a)};
-    a.set_idade = function(x){console.log("OverWrite: set_idade " + x)};
-    
-    ko.utils.defineObservableProperty(a, 'nomeCompleto');
-    ko.utils.defineObservableProperty(a, 'idade');
-	ko.applyBindings(a);
       })();
-      
-
     </script>
     
     
